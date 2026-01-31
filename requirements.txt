@@ -4,3 +4,4 @@ redis
 google-cloud-storage
 google-generativeai
 python-dotenv
+python-multipart

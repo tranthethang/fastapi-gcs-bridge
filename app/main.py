@@ -1,7 +1,3 @@
-# fastapi-gcs-bridge: Centralized File Service for Gemini
-# Features: File Upload Reception, Hash-based Caching, Daily Logging
-# Full comments in English as requested
-
 import os
 import time
 import logging
@@ -32,9 +28,12 @@ logger.addHandler(logging.StreamHandler())
 app = FastAPI(title="FastAPI Gemini Bridge")
 
 try:
+    # Initialize Redis with password from Dify's config
     r = redis.Redis(
-        host=os.getenv("REDIS_HOST", "192.0.1.3"),
+        host=os.getenv("REDIS_HOST", "localhost"),
         port=int(os.getenv("REDIS_PORT", 6379)),
+        password=os.getenv("REDIS_PASSWORD"), # This will now be 'difyai123456'
+        db=int(os.getenv("REDIS_DB", 0)),
         decode_responses=True
     )
     r.ping()
