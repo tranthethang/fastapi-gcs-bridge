@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .venv/bin/activate
+
 # Load .env file, ignoring comments and empty lines
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
