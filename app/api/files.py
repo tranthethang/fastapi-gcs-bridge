@@ -3,6 +3,7 @@ import time
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.logger import logger
+from app.schemas.files import UploadResponse
 from app.services.gemini_service import gemini_service
 from app.services.redis_service import redis_service
 from app.utils.hash import calculate_hash
@@ -10,7 +11,7 @@ from app.utils.hash import calculate_hash
 router = APIRouter()
 
 
-@router.post("/upload")
+@router.post("/upload", response_model=UploadResponse)
 async def upload_file_to_gemini(
     file: UploadFile = File(...), project_id: str = Form("default")
 ):
