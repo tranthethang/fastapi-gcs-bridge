@@ -16,8 +16,16 @@ async def upload_file_to_gemini(
     file: UploadFile = File(...), project_id: str = Form("default")
 ):
     logger.info(f"RECEIVED REQUEST: Project='{project_id}', Filename='{file.filename}'")
+    if not file.filename:
+        logger.error("VALIDATION ERROR: Filename is empty")
+        raise HTTPException(status_code=400, detail="Filename is empty")
+
     try:
         content = await file.read()
+        if not content:
+            logger.error("VALIDATION ERROR: File is empty")
+            raise HTTPException(status_code=400, detail="File is empty")
+
         file_hash = calculate_hash(content)
 
         cached_uri = redis_service.get_uri(file_hash)
@@ -30,7 +38,9 @@ async def upload_file_to_gemini(
             f.write(content)
 
         start_time = time.time()
-        gemini_file = gemini_service.upload_file(temp_path, file.filename)
+        gemini_file = gemini_service.upload_file(
+            temp_path, file.filename, file.content_type
+        )
 
         redis_service.set_uri(file_hash, gemini_file.uri)
 

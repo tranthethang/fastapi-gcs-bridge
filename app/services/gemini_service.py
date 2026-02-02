@@ -10,10 +10,12 @@ class GeminiService:
     def __init__(self):
         genai.configure(api_key=Config.GEMINI_API_KEY)
 
-    def upload_file(self, temp_path: str, filename: str):
+    def upload_file(self, temp_path: str, filename: str, mime_type: str = None):
         try:
             logger.info("CACHE MISS: Uploading new file to Gemini...")
-            gemini_file = genai.upload_file(path=temp_path, display_name=filename)
+            gemini_file = genai.upload_file(
+                path=temp_path, display_name=filename, mime_type=mime_type
+            )
             return gemini_file
         except Exception as e:
             logger.error(f"GEMINI UPLOAD ERROR: {str(e)}")
