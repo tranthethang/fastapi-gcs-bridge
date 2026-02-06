@@ -2,6 +2,7 @@ import time
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
+from app.config import Config
 from app.logger import logger
 from app.schemas.files import UploadResponse
 from app.services.gemini_service import gemini_service
@@ -28,7 +29,7 @@ async def upload_file_to_gemini(
 
         file_hash = calculate_hash(content)
 
-        cached_uri = redis_service.get_uri(file_hash)
+        cached_uri = await redis_service.get(file_hash)
         if cached_uri:
             logger.info(f"CACHE HIT: File hash {file_hash} already exists.")
             return {"hit": True, "gemini_uri": cached_uri, "hash": file_hash}
@@ -38,11 +39,11 @@ async def upload_file_to_gemini(
             f.write(content)
 
         start_time = time.time()
-        gemini_file = gemini_service.upload_file(
+        gemini_file = await gemini_service.upload_file(
             temp_path, file.filename, file.content_type
         )
 
-        redis_service.set_uri(file_hash, gemini_file.uri)
+        await redis_service.set(file_hash, gemini_file.uri, expire=Config.CACHE_TTL)
 
         duration = time.time() - start_time
         logger.info(f"UPLOAD SUCCESS: URI={gemini_file.uri} in {duration:.2f}s")
