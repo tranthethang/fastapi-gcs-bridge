@@ -18,9 +18,13 @@ ARG WWWGROUP
 
 WORKDIR /app
 
-# Create 'agent' user and group
-RUN addgroup -g ${WWWGROUP} agent && \
-    adduser -D -u ${WWWUSER} -G agent agent
+# Create 'agent' user and group, handling cases where GID/UID might already exist
+RUN if ! grep -q ":${WWWGROUP}:" /etc/group; then \
+        addgroup -g ${WWWGROUP} agent; \
+    fi && \
+    if ! grep -q ":${WWWUSER}:" /etc/passwd; then \
+        adduser -D -u ${WWWUSER} -G $(grep ":${WWWGROUP}:" /etc/group | cut -d: -f1) agent; \
+    fi
 
 # Copy installed libraries from builder stage
 COPY --from=builder /install /usr/local
@@ -29,4 +33,4 @@ COPY --from=builder /install /usr/local
 USER agent
 
 # Default command for development (Port 80)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
