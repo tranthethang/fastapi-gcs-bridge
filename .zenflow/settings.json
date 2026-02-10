@@ -1,6 +1,6 @@
 {
-  "setup_script": "pip install -r requirements.txt",
-  "dev_script": "python -m app.main",
-  "verification_script": "black --check . && isort --check-only .",
+  "setup_script": "python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt",
+  "dev_script": "source .venv/bin/activate && python -m app.main",
+  "verification_script": "source .venv/bin/activate && black --check . && isort --check-only .",
   "copy_files": [".env"]
 }
