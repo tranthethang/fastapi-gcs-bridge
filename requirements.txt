@@ -13,3 +13,4 @@ pytest-cov
 boto3
 black
 isort
+pyflow-ai-stack

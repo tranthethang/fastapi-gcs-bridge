@@ -1,10 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
+from pyflow_ai_stack.schemas.models import HealthResponse
 
 from app.api.files import router as files_router
-from app.config import Config
-from app.schemas.models import HealthResponse
-from app.services.health_service import health_service
+from app.core.config import settings
+from app.services import health_service
 
 app = FastAPI(title="FastAPI Gemini Bridge")
 
@@ -28,4 +28,6 @@ async def health_check(depends: int = 0):
 
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:app", host="0.0.0.0", port=Config.APP_PORT, reload=True)
+    uvicorn.run(
+        "app.main:app", host="0.0.0.0", port=settings.APP_PORT, reload=settings.DEBUG
+    )
