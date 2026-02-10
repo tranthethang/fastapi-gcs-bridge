@@ -1,14 +1,15 @@
-import time
+"""
+API endpoints for file operations.
+Handles file uploads and interactions with the file service.
+"""
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
-from app.config import Config
-from app.logger import logger
-from app.schemas.files import UploadResponse
-from app.services.gemini_service import gemini_service
-from app.services.redis_service import redis_service
-from app.utils.hash import calculate_hash
+from app.core import logger
+from app.schemas import UploadResponse
+from app.services import file_service
 
+# Define the router for file-related endpoints
 router = APIRouter()
 
 
@@ -16,44 +17,29 @@ router = APIRouter()
 async def upload_file_to_gemini(
     file: UploadFile = File(...), project_id: str = Form("default")
 ):
-    logger.info(f"RECEIVED REQUEST: Project='{project_id}', Filename='{file.filename}'")
+    """
+    Endpoint to upload a file to Gemini via the file service.
+
+    Args:
+        file: The file to be uploaded.
+        project_id: The ID of the project associated with the file.
+
+    Returns:
+        UploadResponse: Metadata about the uploaded file.
+    """
+    logger.info(f"UPLOAD REQUEST: Project='{project_id}', Filename='{file.filename}'")
+
+    # Basic validation for filename
     if not file.filename:
-        logger.error("VALIDATION ERROR: Filename is empty")
         raise HTTPException(status_code=400, detail="Filename is empty")
 
     try:
-        content = await file.read()
-        if not content:
-            logger.error("VALIDATION ERROR: File is empty")
-            raise HTTPException(status_code=400, detail="File is empty")
-
-        file_hash = calculate_hash(content)
-
-        cached_uri = await redis_service.get(file_hash)
-        if cached_uri:
-            logger.info(f"CACHE HIT: File hash {file_hash} already exists.")
-            return {"hit": True, "gemini_uri": cached_uri, "hash": file_hash}
-
-        temp_path = f"temp_{file_hash}_{file.filename}"
-        with open(temp_path, "wb") as f:
-            f.write(content)
-
-        start_time = time.time()
-        gemini_file = await gemini_service.upload_file(
-            temp_path, file.filename, file.content_type
-        )
-
-        await redis_service.set(file_hash, gemini_file.uri, expire=Config.CACHE_TTL)
-
-        duration = time.time() - start_time
-        logger.info(f"UPLOAD SUCCESS: URI={gemini_file.uri} in {duration:.2f}s")
-
-        return {
-            "hit": False,
-            "gemini_uri": gemini_file.uri,
-            "hash": file_hash,
-            "project": project_id,
-        }
+        # Delegate upload logic to the file service
+        return await file_service.upload_file(file, project_id)
+    except HTTPException:
+        # Re-raise HTTP exceptions to be handled by FastAPI
+        raise
     except Exception as e:
-        logger.error(f"PROCESS ERROR: {str(e)}")
+        # Log unexpected errors and return a 500 Internal Server Error
+        logger.error(f"UPLOAD ERROR: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
