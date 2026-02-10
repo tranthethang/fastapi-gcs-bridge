@@ -1,16 +1,17 @@
 fastapi
 uvicorn
-pydantic-settings
-google-generativeai
+pydantic - settings
+google - generativeai
 aioboto3
 redis
 httpx
-python-multipart
-python-dotenv
+python - multipart
+python - dotenv
 pytest
-pytest-asyncio
-pytest-cov
+pytest - asyncio
+pytest - cov
 boto3
 black
 isort
-pyflow-ai-stack
+pyflow - ai - stack
+loguru

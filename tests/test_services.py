@@ -9,16 +9,17 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from fastapi import HTTPException, UploadFile
 
+from app.core import logger
 from app.services.file_service import FileService
 
 
 @pytest.fixture(autouse=True)
 def mock_logger():
     """Fixture to mock the logger to avoid actual logging during tests."""
-    # Patch the logger in app.core, which is what file_service uses
-    with patch("app.core.logger.logger.info") as mock_info, patch(
-        "app.core.logger.logger.error"
-    ) as mock_error, patch("app.core.logger.logger.warning") as mock_warning:
+    # Patch the logger instance directly
+    with patch.object(logger, "info") as mock_info, patch.object(
+        logger, "error"
+    ) as mock_error, patch.object(logger, "warning") as mock_warning:
         yield {"info": mock_info, "error": mock_error, "warning": mock_warning}
 
 
