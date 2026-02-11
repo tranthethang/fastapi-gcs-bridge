@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     )
 
     # General Application Settings
-    APP_NAME: str = "fastapi-gemini-bridge"
+    APP_NAME: str = "fastapi-gcs-bridge"
     DEBUG: bool = False
     APP_PORT: int = 80
 
