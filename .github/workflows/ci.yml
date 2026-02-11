@@ -9,9 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     env:
-      APP_PORT: 60062
+      APP_PORT: 60060
       GEMINI_API_KEY: dummy_key
       GEMINI_MODEL: gemini-2.0-flash
       AWS_ACCESS_KEY_ID: admin
