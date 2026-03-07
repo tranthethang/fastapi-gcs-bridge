@@ -49,8 +49,8 @@ class FileService:
             logger.info(f"CACHE HIT: {file_hash}")
             return {"hit": True, "gemini_uri": cached_uri, "hash": file_hash}
 
-        # Temporary file path for Gemini SDK upload
-        temp_path = f"temp_{file_hash}_{file.filename}"
+        # Temporary file path for Gemini SDK upload (using timestamp to avoid race conditions)
+        temp_path = f"temp_{file_hash}_{int(time.time() * 1000)}_{file.filename}"
         try:
             # Write content to a temporary file
             with open(temp_path, "wb") as f:

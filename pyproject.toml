@@ -1,0 +1,25 @@
+[project]
+name = "fastapi-gcs-bridge"
+version = "0.1.0"
+description = "A centralized file service designed to act as an intermediary between client applications and the **Gemini File API**. It optimizes file handling by providing hash-based deduplication and caching, preventing redundant uploads to Google's infrastructure."
+readme = "README.md"
+requires-python = "==3.10.*"
+dependencies = [
+    "aioboto3>=15.5.0",
+    "black>=26.3.0",
+    "boto3>=1.40.61",
+    "fastapi>=0.135.1",
+    "google-generativeai>=0.8.6",
+    "httpx>=0.28.1",
+    "isort>=8.0.1",
+    "loguru>=0.7.3",
+    "pydantic-settings>=2.13.1",
+    "pyflow-ai-stack>=1.0.1",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=7.0.0",
+    "python-dotenv>=1.2.2",
+    "python-multipart>=0.0.22",
+    "redis>=7.3.0",
+    "uvicorn>=0.41.0",
+]
