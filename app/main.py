@@ -4,6 +4,7 @@ This module initializes the FastAPI app, includes routers, and defines the healt
 """
 
 import os
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

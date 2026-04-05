@@ -17,9 +17,11 @@ from app.services.file_service import FileService
 def mock_logger():
     """Fixture to mock the logger to avoid actual logging during tests."""
     # Patch the logger instance directly
-    with patch.object(logger, "info") as mock_info, patch.object(
-        logger, "error"
-    ) as mock_error, patch.object(logger, "warning") as mock_warning:
+    with (
+        patch.object(logger, "info") as mock_info,
+        patch.object(logger, "error") as mock_error,
+        patch.object(logger, "warning") as mock_warning,
+    ):
         yield {"info": mock_info, "error": mock_error, "warning": mock_warning}
 
 
@@ -104,9 +106,11 @@ async def test_upload_file_cleanup_on_error(file_service, mock_gemini, mock_redi
     mock_redis.get.return_value = None
     mock_gemini.upload_file.side_effect = Exception("Upload failed")
 
-    with patch("os.remove") as mock_remove, patch(
-        "os.path.exists", return_value=True
-    ), patch("builtins.open", MagicMock()):
+    with (
+        patch("os.remove") as mock_remove,
+        patch("os.path.exists", return_value=True),
+        patch("builtins.open", MagicMock()),
+    ):
         with pytest.raises(Exception):
             await file_service.upload_file(mock_file, "test_project")
 
