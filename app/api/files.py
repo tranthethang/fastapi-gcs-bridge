@@ -13,7 +13,7 @@ from app.services import file_service
 router = APIRouter()
 
 
-@router.post("/upload", response_model=UploadResponse)
+@router.post("/upload", response_model=UploadResponse, status_code=201)
 async def upload_file_to_gemini(
     file: UploadFile = File(...), project_id: str = Form("default")
 ):
