@@ -3,10 +3,10 @@ API endpoints for file operations.
 Handles file uploads and interactions with the file service.
 """
 
+from app.schemas import UploadResponse
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.core import logger
-from app.schemas import UploadResponse
 from app.services import file_service
 
 # Define the router for file-related endpoints

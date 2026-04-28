@@ -54,9 +54,8 @@ def test_upload_file_no_filename_logic():
     """Tests the error handling when an empty filename is provided."""
     import asyncio
 
-    from fastapi import HTTPException, UploadFile
-
     from app.api.files import upload_file_to_gemini
+    from fastapi import HTTPException, UploadFile
 
     mock_file = MagicMock(spec=UploadFile)
     mock_file.filename = ""

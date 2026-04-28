@@ -3,14 +3,13 @@ Tests for the service layer, specifically FileService.
 Uses mocks for Redis and Gemini services to isolate business logic.
 """
 
-import os
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from app.services.file_service import FileService
 from fastapi import HTTPException, UploadFile
 
 from app.core import logger
-from app.services.file_service import FileService
 
 
 @pytest.fixture(autouse=True)

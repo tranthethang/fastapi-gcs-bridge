@@ -3,13 +3,13 @@ Services initialization module.
 This module instantiates the core service singletons used throughout the application.
 """
 
+from app.services.file_service import FileService
 from pyflow_ai_stack.services.gemini_service import GeminiService
 from pyflow_ai_stack.services.health_service import HealthService
 from pyflow_ai_stack.services.redis_service import RedisService
 from pyflow_ai_stack.services.s3_service import S3Service
 
 from app.core.config import settings
-from app.services.file_service import FileService
 
 # Initialize core singleton instances using application settings
 gemini_service = GeminiService(settings.gemini)

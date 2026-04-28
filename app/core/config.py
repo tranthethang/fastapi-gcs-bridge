@@ -4,7 +4,6 @@ Uses pydantic-settings to manage environment variables.
 """
 
 from pathlib import Path
-from typing import Optional
 
 from pydantic import AliasChoices, Field
 from pydantic_settings import SettingsConfigDict
@@ -41,19 +40,19 @@ class Settings(BaseSettings):
     CACHE_TTL: int = 169200  # 47 hours
 
     # Same S3 env names as gemini-pipeline (pyflow defaults to AWS_* / S3_ENDPOINT_URL).
-    AWS_ACCESS_KEY_ID: Optional[str] = Field(
+    AWS_ACCESS_KEY_ID: str | None = Field(
         default="minioadmin",
         validation_alias=AliasChoices("AWS_ACCESS_KEY_ID", "S3_ACCESS_KEY"),
     )
-    AWS_SECRET_ACCESS_KEY: Optional[str] = Field(
+    AWS_SECRET_ACCESS_KEY: str | None = Field(
         default="minioadmin123",
         validation_alias=AliasChoices("AWS_SECRET_ACCESS_KEY", "S3_SECRET_KEY"),
     )
-    S3_BUCKET_NAME: Optional[str] = Field(
+    S3_BUCKET_NAME: str | None = Field(
         default="gemini-pipeline",
         validation_alias=AliasChoices("S3_BUCKET_NAME", "S3_BUCKET"),
     )
-    S3_ENDPOINT_URL: Optional[str] = Field(
+    S3_ENDPOINT_URL: str | None = Field(
         default="http://localhost:9000",
         validation_alias=AliasChoices("S3_ENDPOINT_URL", "S3_ENDPOINT"),
     )

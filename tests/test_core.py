@@ -2,8 +2,6 @@
 Tests for core components like settings and logger.
 """
 
-from unittest.mock import patch
-
 from app.core.config import Settings, settings
 from app.core.logger import setup_logger
 
