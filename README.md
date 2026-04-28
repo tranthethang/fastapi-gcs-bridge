@@ -35,16 +35,13 @@ A centralized file service designed to act as an intermediary between client app
 
 2. **Create and activate a virtual environment**:
    ```bash
-   python -m venv venv
-   # On Linux/macOS:
-   source venv/bin/activate
-   # On Windows:
-   venv\Scripts\activate
+   uv venv .venv --python 3.10
+   source .venv/bin/activate
    ```
 
 3. **Install dependencies**:
    ```bash
-   pip install -r requirements.txt
+   uv sync --dev
    ```
 
 4. **Configure environment variables**:
@@ -109,4 +106,4 @@ curl -X POST http://localhost:60060/v1/files/upload \
   - `main.py`: Application entry point.
 - `logs/`: Directory for log files.
 - `verify.py`: Testing and validation script.
-- `requirements.txt`: Python dependencies.
+- `pyproject.toml`: Python dependencies (uv/PEP 621).

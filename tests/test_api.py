@@ -46,7 +46,7 @@ def test_upload_file_success():
         data = {"project_id": "p1"}
         response = client.post("/v1/files/upload", files=files, data=data)
 
-        assert response.status_code == 200
+        assert response.status_code == 201
         assert response.json()["gemini_uri"] == "gemini://test"
 
 

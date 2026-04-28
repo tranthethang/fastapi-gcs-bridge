@@ -2,15 +2,22 @@
 Tests for core components like settings and logger.
 """
 
+import pytest
+
 from app.core.config import Settings, settings
 from app.core.logger import setup_logger
 
 
-def test_settings_defaults():
-    """Verifies that default settings are correctly loaded."""
-    assert settings.APP_NAME == "fastapi-gcs-bridge"
-    assert settings.DEBUG is False
-    assert settings.APP_PORT == 80
+def test_settings_defaults(monkeypatch: pytest.MonkeyPatch):
+    """Verifies that class defaults apply when env is not set."""
+    monkeypatch.delenv("DEBUG", raising=False)
+    monkeypatch.delenv("APP_PORT", raising=False)
+    monkeypatch.delenv("APP_NAME", raising=False)
+
+    default_settings = Settings(_env_file=None)
+    assert default_settings.APP_NAME == "fastapi-gcs-bridge"
+    assert default_settings.DEBUG is False
+    assert default_settings.APP_PORT == 80
 
 
 def test_settings_custom():
