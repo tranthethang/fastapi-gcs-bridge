@@ -3,8 +3,11 @@ Main entry point for the FastAPI application.
 This module initializes the FastAPI app, includes routers, and defines the health check endpoint.
 """
 
+import os
+
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pyflow_ai_stack.schemas.models import HealthResponse
 
 from app.api import files_router
@@ -12,7 +15,20 @@ from app.core import settings
 from app.services import health_service
 
 # Initialize FastAPI application with settings
-app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
+app = FastAPI(
+    title=settings.APP_NAME,
+    debug=settings.DEBUG,
+    root_path=os.getenv("ROOT_PATH", ""),
+)
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Register API routers
 app.include_router(files_router, prefix="/v1/files", tags=["files"])

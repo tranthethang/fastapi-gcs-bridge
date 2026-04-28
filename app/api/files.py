@@ -3,17 +3,17 @@ API endpoints for file operations.
 Handles file uploads and interactions with the file service.
 """
 
+from app.schemas import UploadResponse
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.core import logger
-from app.schemas import UploadResponse
 from app.services import file_service
 
 # Define the router for file-related endpoints
 router = APIRouter()
 
 
-@router.post("/upload", response_model=UploadResponse)
+@router.post("/upload", response_model=UploadResponse, status_code=201)
 async def upload_file_to_gemini(
     file: UploadFile = File(...), project_id: str = Form("default")
 ):

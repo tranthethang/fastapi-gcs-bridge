@@ -3,8 +3,6 @@ Pydantic schemas for file-related operations.
 Defines the structure of request and response models.
 """
 
-from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -20,4 +18,4 @@ class UploadResponse(BaseModel):
     # The SHA256 hash of the uploaded file
     hash: str
     # The project ID associated with the upload
-    project: Optional[str] = None
+    project: str | None = None

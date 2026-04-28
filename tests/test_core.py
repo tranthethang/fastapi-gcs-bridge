@@ -2,8 +2,6 @@
 Tests for core components like settings and logger.
 """
 
-from unittest.mock import patch
-
 from app.core.config import Settings, settings
 from app.core.logger import setup_logger
 
@@ -11,8 +9,8 @@ from app.core.logger import setup_logger
 def test_settings_defaults():
     """Verifies that default settings are correctly loaded."""
     assert settings.APP_NAME == "fastapi-gcs-bridge"
-    assert settings.DEBUG is True
-    assert settings.APP_PORT == 60060
+    assert settings.DEBUG is False
+    assert settings.APP_PORT == 80
 
 
 def test_settings_custom():
