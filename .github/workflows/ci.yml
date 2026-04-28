@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "develop" ]
 
+defaults:
+  run:
+    working-directory: services/gcs-bridge
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -46,4 +50,4 @@ jobs:
 
     - name: Run tests
       run: |
-        uv run pytest tests/
+        make test
